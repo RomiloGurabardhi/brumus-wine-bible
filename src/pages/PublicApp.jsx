@@ -123,9 +123,9 @@ export default function PublicApp() {
           Brumus Wine Bible
         </div>
         <div>
-          Original concept by <span style={{ color: 'var(--gold)' }}>Romain</span>
+          Conceived &amp; designed by <span style={{ color: 'var(--gold)' }}>Romain</span>
           {' · '}
-          Designed &amp; built by <span style={{ color: 'var(--gold)' }}>Romilo</span>
+          Developed by <span style={{ color: 'var(--gold)' }}>Romilo</span>
         </div>
         <div style={{ marginTop: 4, fontSize: 11 }}>
           Brumus Bar &amp; Restaurant · Haymarket Hotel · Firmdale Hotels
