@@ -109,6 +109,28 @@ export default function PublicApp() {
       {activeTab === 'quiz' && <Quiz wines={wines} />}
 
       {activeTab === 'leaderboard' && <Leaderboard />}
+
+      <footer style={{
+        marginTop: 60,
+        padding: '28px 24px',
+        borderTop: '1px solid var(--border)',
+        textAlign: 'center',
+        fontSize: 12,
+        color: 'var(--muted)',
+        lineHeight: 1.8,
+      }}>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: 14, color: 'var(--text)', marginBottom: 4, letterSpacing: '0.03em' }}>
+          Brumus Wine Bible
+        </div>
+        <div>
+          Conceived by <span style={{ color: 'var(--gold)' }}>Romain</span>
+          {' · '}
+          Crafted by <span style={{ color: 'var(--gold)' }}>Romilo</span>
+        </div>
+        <div style={{ marginTop: 4, fontSize: 11 }}>
+          Brumus Bar &amp; Restaurant · Haymarket Hotel · Firmdale Hotels
+        </div>
+      </footer>
     </>
   )
 }
