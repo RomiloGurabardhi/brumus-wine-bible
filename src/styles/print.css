@@ -1,0 +1,94 @@
+@media print {
+  body { background: white; color: black; font-size: 11pt; }
+
+  .site-header,
+  .tab-bar,
+  .filter-bar,
+  .legend-bar,
+  .expand-hint,
+  .card-actions,
+  .btn { display: none !important; }
+
+  .wine-card { box-shadow: none; transform: none; break-inside: avoid; }
+  .card-body { display: block !important; }
+}
+
+/* Print tasting note page (opened in new window) */
+.print-page {
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 40px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.print-header {
+  border-bottom: 2px solid #1a1208;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.print-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.print-logo span { font-style: italic; font-weight: 400; color: #c4963a; }
+
+.print-date { font-size: 12px; color: #6b5e4e; }
+
+.print-wine-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.print-wine-sub { font-size: 14px; color: #6b5e4e; margin-bottom: 20px; }
+
+.print-price {
+  font-size: 18px;
+  font-weight: 500;
+  color: #8b3a1c;
+  margin-bottom: 24px;
+}
+
+.print-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e8e0d4;
+  font-size: 13px;
+}
+
+.print-label {
+  font-weight: 600;
+  min-width: 100px;
+  flex-shrink: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b5e4e;
+  padding-top: 1px;
+}
+
+.print-upsell {
+  background: #fff8e8;
+  border-left: 3px solid #c4963a;
+  padding: 10px 14px;
+  margin-top: 16px;
+  font-size: 12.5px;
+  border-radius: 0 8px 8px 0;
+}
+
+.print-footer {
+  margin-top: 32px;
+  font-size: 11px;
+  color: #aaa;
+  text-align: center;
+  border-top: 1px solid #e8e0d4;
+  padding-top: 14px;
+}
