@@ -654,10 +654,12 @@
 /* ===== WORLD MAP ===== */
 .map-container { position: relative; height: calc(100vh - var(--header-height) - var(--tab-height) - 20px); min-height: 480px; display: flex; }
 
-.map-main { flex: 1; overflow: hidden; position: relative; background: #1a2e4a; }
+.map-main { flex: 1; overflow: hidden; position: relative; }
 
 .map-side-panel {
   width: 360px;
+  min-width: 260px;
+  max-width: 600px;
   flex-shrink: 0;
   background: var(--card);
   border-left: 1px solid var(--border);
@@ -672,6 +674,37 @@
 }
 
 .map-side-panel.open { transform: translateX(0); }
+
+.map-panel-resize-handle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 40px;
+  cursor: ew-resize;
+  z-index: 20;
+  background: var(--border);
+  border-radius: 0 6px 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.map-panel-resize-handle::after {
+  content: '⋮';
+  font-size: 14px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.map-panel-resize-handle:hover,
+.map-panel-resize-handle.dragging {
+  background: var(--accent);
+}
+.map-panel-resize-handle:hover::after,
+.map-panel-resize-handle.dragging::after {
+  color: white;
+}
 
 .map-panel-header {
   padding: 16px 20px;
@@ -733,28 +766,174 @@
 .map-wine-pill-name { font-weight: 500; }
 .map-wine-pill-sub { color: var(--muted); font-size: 11px; }
 
-.map-zoom-btns {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 10;
+/* Wine region labels on map */
+.map-region-label {
+  display: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #4a3520;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.9), 0 0 6px rgba(255,255,255,0.7);
 }
 
-.map-zoom-btn {
+/* Wine country markers */
+.map-marker {
+  width: 28px;
+  height: 28px;
+  background: #c4963a;
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  transition: transform 0.15s, background 0.15s;
+}
+.map-marker:hover { transform: scale(1.2); background: #a87830; }
+.map-marker-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Draw mode button */
+.map-draw-btn {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  z-index: 10;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 16px;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, color 0.15s;
+}
+.map-draw-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Draw mode status bar */
+.map-draw-bar {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--card);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 12px;
+  color: var(--text);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Naming form modal */
+.map-draw-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.map-draw-modal-inner {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+/* Region resize corner handles */
+.map-resize-handle {
+  width: 12px;
+  height: 12px;
+  background: white;
+  border: 2px solid #c4963a;
+  border-radius: 3px;
+  cursor: nwse-resize;
+  z-index: 20;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.map-resize-handle:hover { background: #c4963a; }
+
+/* Toolbar shown when a region is selected */
+.map-region-toolbar {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text);
   box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+.map-region-toolbar button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.map-region-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Legend */
+.map-legend {
+  position: absolute;
+  bottom: 36px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--muted);
+  z-index: 5;
+  transition: right 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.map-legend-row { display: flex; align-items: center; gap: 7px; }
+.map-legend-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.map-legend-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #c4963a;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  flex-shrink: 0;
 }
 
-.map-zoom-btn:hover { background: var(--bg); }
+/* Override MapLibre default nav control position so it doesn't clash */
+.maplibregl-ctrl-top-left { top: 10px; left: 10px; }
 
 @media (max-width: 768px) {
   .map-container { flex-direction: column; height: auto; }
@@ -772,6 +951,7 @@
     max-height: 55vh;
   }
   .map-side-panel.open { transform: none; }
+  .map-legend { bottom: 8px; right: 8px !important; }
 }
 
 /* ===== ADMIN LAYOUT ===== */

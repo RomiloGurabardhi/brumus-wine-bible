@@ -3,6 +3,7 @@ const NAV_ITEMS = [
   { id: 'quizzes', icon: '📝', label: 'Quizzes' },
   { id: 'results', icon: '📊', label: 'Results' },
   { id: 'leaderboard', icon: '🏆', label: 'Leaderboard' },
+  { id: 'map', icon: '🗺️', label: 'Map Editor' },
   { id: 'settings', icon: '⚙️', label: 'Settings' },
 ]
 
